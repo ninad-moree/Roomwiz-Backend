@@ -23,8 +23,7 @@ public class RoomResponse {
         this.roomType = roomType;
         this.roomPrice = roomPrice;
     }
-
-    @SuppressWarnings("deprecation")
+    
     public RoomResponse(Long id, String roomType, BigDecimal roomPrice, boolean isBooked, byte[] photoBytes, List<BookingResponse> bookings) {
         this.id = id;
         this.roomType = roomType;
