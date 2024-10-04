@@ -6,7 +6,7 @@ import java.sql.Blob;
 import java.sql.SQLException;
 import java.util.ArrayList;
 import java.util.List;
-
+import java.util.Optional;
 import javax.sql.rowset.serial.SerialBlob;
 
 import org.apache.tomcat.util.codec.binary.Base64;
@@ -25,6 +25,7 @@ import org.springframework.web.multipart.MultipartFile;
 
 
 import com.hotels.roomwiz.exception.PhotoRetrievalException;
+import com.hotels.roomwiz.exception.ResourceNotFoundException;
 // import com.hotels.roomwiz.model.BookedRoom;
 import com.hotels.roomwiz.model.Room;
 // import com.hotels.roomwiz.response.BookingResponse;
@@ -116,4 +117,13 @@ public class RoomController {
         RoomResponse roomResponse = getRoomResponse(theRoom);
         return ResponseEntity.ok(roomResponse);
     } 
+
+    @GetMapping("/room/{roomId}")
+    public ResponseEntity<Optional<RoomResponse>> getRoomById(@PathVariable Long roomId) {
+        Optional<Room> theRoom = roomService.getRoomById(roomId);
+        return theRoom.map(room -> {
+            RoomResponse roomResponse = getRoomResponse(room);
+            return ResponseEntity.ok(Optional.of(roomResponse));
+        }).orElseThrow(() -> new ResourceNotFoundException("Room Not Found."));
+    }
 }
