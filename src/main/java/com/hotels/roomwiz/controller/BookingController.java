@@ -1,5 +1,5 @@
 package com.hotels.roomwiz.controller;
 
-public class BookedRoomController {
+public class BookingController {
 
 }

@@ -1,5 +1,5 @@
 package com.hotels.roomwiz.service;
 
-public interface IBookedRoomService {
+public interface IBookingService {
 
 }
