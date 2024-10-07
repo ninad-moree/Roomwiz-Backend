@@ -2,8 +2,6 @@ package com.hotels.roomwiz.response;
 
 import java.time.LocalDate;
 
-import com.hotels.roomwiz.model.Room;
-
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
@@ -21,7 +19,7 @@ public class BookingResponse {
     private int numOfChildren;
     private int totalNumberOfGuests;
     private String bookingConfirmationCode;
-    private Room room;
+    private RoomResponse room;
 
     public BookingResponse(Long id, LocalDate checkInDate, LocalDate checkOutDate, String bookingConfirmationCode) {
         this.id = id;
