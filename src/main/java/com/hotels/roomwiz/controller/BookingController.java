@@ -77,7 +77,7 @@ public class BookingController {
             booking.getCheckInDate(), 
             booking.getCheckOutDate(), 
             booking.getGuestFullName(), 
-            booking.getQuestEmail(), 
+            booking.getGuestEmail(), 
             booking.getNumOfAdults(), 
             booking.getNumOfChildren(),
             booking.getTotalNumberOfGuests(),

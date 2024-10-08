@@ -37,7 +37,7 @@ public class BookedRoom {
     private String guestFullName;
 
     @Column(name = "guest_Email")
-    private String questEmail;
+    private String guestEmail;
 
     @Column(name = "adults")
     private int numOfAdults;
