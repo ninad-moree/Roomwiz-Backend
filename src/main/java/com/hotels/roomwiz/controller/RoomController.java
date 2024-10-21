@@ -75,6 +75,35 @@ public class RoomController {
         return ResponseEntity.ok(roomResponses);
     }
 
+    @DeleteMapping("/delete/room/{roomId}")
+    public ResponseEntity<Void> deleteRoom(@PathVariable Long roomId) {
+        roomService.deleteRoom(roomId);
+        return new ResponseEntity<>(HttpStatus.NO_CONTENT);
+    }
+
+    @PutMapping("/edit/{roomId}") 
+    public ResponseEntity<RoomResponse> updateRoom(@PathVariable Long roomId, @RequestParam(required = false) String roomType, @RequestParam(required = false) BigDecimal roomPrice, @RequestParam(required = false) MultipartFile photo) throws SQLException, IOException {
+        byte[] photoBytes = photo != null && !photo.isEmpty() ? photo.getBytes() : roomService.getRoomPhotoByRoomId(roomId);
+        Blob photoBlob = photoBytes != null && photoBytes.length > 0 ? new SerialBlob(photoBytes) : null;
+        Room theRoom = roomService.updateRoom(roomId, roomType, roomPrice, photoBytes);
+        theRoom.setPhoto(photoBlob);
+        RoomResponse roomResponse = getRoomResponse(theRoom);
+        return ResponseEntity.ok(roomResponse);
+    } 
+
+    @GetMapping("/room/{roomId}")
+    public ResponseEntity<Optional<RoomResponse>> getRoomById(@PathVariable Long roomId) {
+        Optional<Room> theRoom = roomService.getRoomById(roomId);
+        return theRoom.map(room -> {
+            RoomResponse roomResponse = getRoomResponse(room);
+            return ResponseEntity.ok(Optional.of(roomResponse));
+        }).orElseThrow(() -> new ResourceNotFoundException("Room Not Found."));
+    }
+
+    
+
+
+
     private RoomResponse getRoomResponse(Room room) {
         // List<BookedRoom> bookings = getAllBookingsByRoomId(room.getId());
         // List<BookingResponse> bookingResponses = bookings
@@ -101,29 +130,4 @@ public class RoomController {
     // private List<BookedRoom> getAllBookingsByRoomId(Long roomId) {
     //     return bookedRoomService.getAllBookingsByRoomId(roomId);
     // }
-
-    @DeleteMapping("/delete/room/{roomId}")
-    public ResponseEntity<Void> deleteRoom(@PathVariable Long roomId) {
-        roomService.deleteRoom(roomId);
-        return new ResponseEntity<>(HttpStatus.NO_CONTENT);
-    }
-
-    @PutMapping("/edit/{roomId}") 
-    public ResponseEntity<RoomResponse> updateRoom(@PathVariable Long roomId, @RequestParam(required = false) String roomType, @RequestParam(required = false) BigDecimal roomPrice, @RequestParam(required = false) MultipartFile photo) throws SQLException, IOException {
-        byte[] photoBytes = photo != null && !photo.isEmpty() ? photo.getBytes() : roomService.getRoomPhotoByRoomId(roomId);
-        Blob photoBlob = photoBytes != null && photoBytes.length > 0 ? new SerialBlob(photoBytes) : null;
-        Room theRoom = roomService.updateRoom(roomId, roomType, roomPrice, photoBytes);
-        theRoom.setPhoto(photoBlob);
-        RoomResponse roomResponse = getRoomResponse(theRoom);
-        return ResponseEntity.ok(roomResponse);
-    } 
-
-    @GetMapping("/room/{roomId}")
-    public ResponseEntity<Optional<RoomResponse>> getRoomById(@PathVariable Long roomId) {
-        Optional<Room> theRoom = roomService.getRoomById(roomId);
-        return theRoom.map(room -> {
-            RoomResponse roomResponse = getRoomResponse(room);
-            return ResponseEntity.ok(Optional.of(roomResponse));
-        }).orElseThrow(() -> new ResourceNotFoundException("Room Not Found."));
-    }
 }
