@@ -9,5 +9,5 @@ import com.hotels.roomwiz.model.Role;
 public interface RoleRepository extends JpaRepository<Role, Long> {
     Optional<Role> findByName(String role);
 
-    boolean existsByName(String role);
+    boolean existsByName(Role role);
 }
