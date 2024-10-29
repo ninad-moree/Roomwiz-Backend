@@ -28,11 +28,8 @@ import org.springframework.web.multipart.MultipartFile;
 
 import com.hotels.roomwiz.exception.PhotoRetrievalException;
 import com.hotels.roomwiz.exception.ResourceNotFoundException;
-// import com.hotels.roomwiz.model.BookedRoom;
 import com.hotels.roomwiz.model.Room;
-// import com.hotels.roomwiz.response.BookingResponse;
 import com.hotels.roomwiz.response.RoomResponse;
-// import com.hotels.roomwiz.service.BookedRoomServiceImpl;
 import com.hotels.roomwiz.service.IRoomService;
 
 import io.jsonwebtoken.io.SerialException;
@@ -44,7 +41,6 @@ import lombok.RequiredArgsConstructor;
 @CrossOrigin(origins = "*") 
 public class RoomController {
     private final IRoomService roomService;
-    // private final BookedRoomServiceImpl bookedRoomService;
 
     @PostMapping("/add/new-room")
     public ResponseEntity<RoomResponse> addNewRoom(@RequestParam("photo") MultipartFile photo, @RequestParam("roomType") String roomType, @RequestParam("roomPrice") BigDecimal roomPrice) throws SQLException, IOException, SerialException {
@@ -126,16 +122,6 @@ public class RoomController {
     /* PRIVATE METHODS */
 
     private RoomResponse getRoomResponse(Room room) {
-        // List<BookedRoom> bookings = getAllBookingsByRoomId(room.getId());
-        // List<BookingResponse> bookingResponses = bookings
-        //         .stream()
-        //         .map(booking -> new BookingResponse(
-        //                 booking.getBookingId(), 
-        //                 booking.getCheckInDate(), 
-        //                 booking.getCheckOutDate(),
-        //                 booking.getBookingConfirmationCode()
-        //         )).toList();
-
         byte[] photoBytes = null;
         Blob  photoBlob = room.getPhoto();
         if(photoBlob != null) {
@@ -147,8 +133,4 @@ public class RoomController {
         }
         return new RoomResponse(room.getId(), room.getRoomType(), room.getRoomPrice(), room.isBooked(), photoBytes);
     }
-
-    // private List<BookedRoom> getAllBookingsByRoomId(Long roomId) {
-    //     return bookedRoomService.getAllBookingsByRoomId(roomId);
-    // }
 }
