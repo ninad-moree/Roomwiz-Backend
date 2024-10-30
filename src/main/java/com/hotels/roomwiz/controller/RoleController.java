@@ -21,7 +21,7 @@ import com.hotels.roomwiz.service.IRoleService;
 import lombok.RequiredArgsConstructor;
 
 @RestController
-@RequestMapping("/api/roles")
+@RequestMapping("/roles")
 @RequiredArgsConstructor
 public class RoleController {
     private final IRoleService roleService; 
